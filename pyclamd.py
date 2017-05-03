@@ -14,7 +14,7 @@ class PyClamd:
         self.__verbose_writer("Created socket client")
 
         self.__ipc_socket_path = ipc_socket_path
-        if not self.__does_file_exist(self.__ipc_socket_path): raise Exception("UNIX Socket %s does not exist!" % self.__ipc_socket_path)
+        if not self.__does_file_exist(self.__ipc_socket_path): self.socketDoesNotExistException()
         
     def isVerbose(self):
         return self.__verbose_mode
@@ -76,4 +76,8 @@ class PyClamd:
     def isFileVirus(self, file_path):
         if self.__does_file_exist(file_path):
             return "FOUND" in self.__socketSend("SCAN %s" % file_path)
-        else: raise Exception("Error: %s does not exist" % file_path)
+        else: self.socketDoesNotExistException()
+        
+    def socketDoesNotExistException(self):
+        raise Exception("UNIX Socket %s does not exist!" % self.__ipc_socket_path)
+        
