@@ -1,0 +1,2 @@
+from PyClamd import pyclamd
+
